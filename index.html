@@ -1,0 +1,392 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace Tech</title>
+  <style>
+    :root {
+      --primary: #0b3d91;
+      --secondary: #00a8e8;
+      --background: #f4f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: radial-gradient(circle at top, #eef6ff 0%, #f4f7fb 45%, #ffffff 100%);
+      color: var(--text);
+    }
+
+    header {
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+      background: linear-gradient(135deg, #0b3d91 0%, #00a8e8 100%);
+      color: white;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 24px 60px rgba(11, 61, 145, 0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.05;
+    }
+
+    header p {
+      margin: 0.75rem auto 0;
+      max-width: 700px;
+      font-size: 1rem;
+      opacity: 0.92;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(200px, 1fr) auto;
+      gap: 1rem;
+      align-items: center;
+      margin: -2.5rem 0 1.5rem;
+    }
+
+    .search-box,
+    .cart-box {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .search-box input,
+    .search-box select {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      font-size: 0.96rem;
+      margin-top: 0.6rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-box input:focus,
+    .search-box select:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 4px rgba(0, 168, 232, 0.12);
+    }
+
+    .cart-box h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .cart-items {
+      margin-top: 1rem;
+      min-height: 120px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 0.95rem;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-total {
+      text-align: right;
+      margin-top: 1rem;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background: var(--card);
+      padding: 1rem;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+
+    .card h3 {
+      margin: 1rem 0 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .card .price {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .card button {
+      background: linear-gradient(135deg, #0b3d91 0%, #00a8e8 100%);
+      border: none;
+      color: white;
+      padding: 0.85rem 1rem;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .card button:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      background: rgba(0, 168, 232, 0.12);
+      color: #0369a1;
+    }
+
+    footer {
+      margin: 2rem 0 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <p class="badge">Marketplace</p>
+      <h1>Tu tienda online de tecnología fácil e interactiva</h1>
+      <p>Explora gadgets, laptops, accesorios y tecnología para tu oficina o entretenimiento con carrito dinámico.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="topbar">
+      <section class="search-box">
+        <label for="search">Buscar producto</label>
+        <input id="search" type="search" placeholder="Ej. Auriculares, Laptop, Monitor" />
+
+        <label for="category">Filtrar por categoría</label>
+        <select id="category">
+          <option value="all">Todas las categorías</option>
+          <option value="Laptops">Laptops</option>
+          <option value="Accesorios">Accesorios</option>
+          <option value="Audio">Audio</option>
+          <option value="Monitores">Monitores</option>
+        </select>
+      </section>
+
+      <aside class="cart-box">
+        <h2>Carrito</h2>
+        <div class="cart-items" id="cartItems">
+          <p style="margin:0; color:var(--muted);">Agrega productos para verlos aquí.</p>
+        </div>
+        <div class="cart-total" id="cartTotal">Total: $0</div>
+      </aside>
+    </div>
+
+    <section class="grid" id="productGrid"></section>
+  </main>
+
+  <footer>
+    MercadoTech  Productos seleccionados para simplificar tus compras de tecnología.
+  </footer>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: 'Portátil Ultraligero X14',
+        category: 'Laptops',
+        price: 1299,
+        description: 'Rendimiento para trabajo remoto y diseño con batería de larga duración.',
+        image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 2,
+        name: 'Auriculares inalámbricos ProSound',
+        category: 'Audio',
+        price: 159,
+        description: 'Sonido nítido y cancelación de ruido para calls y música.',
+        image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 3,
+        name: 'Monitor 4K de 27',
+        category: 'Monitores',
+        price: 499,
+        description: 'Pantalla ultra nítida con diseño sin bordes y modo lectura.',
+        image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 4,
+        name: 'Teclado mecánico RGB',
+        category: 'Accesorios',
+        price: 89,
+        description: 'Teclas táctiles con retroiluminación personalizable.',
+        image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 5,
+        name: 'Cámara web Full HD',
+        category: 'Accesorios',
+        price: 69,
+        description: 'Video en alta definición con autoenfoque rápido.',
+        image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 6,
+        name: 'Altavoz Bluetooth portátil',
+        category: 'Audio',
+        price: 79,
+        description: 'Batería para 12 horas y sonido potente en cualquier lugar.',
+        image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80'
+      }
+    ];
+
+    const cart = new Map();
+    const grid = document.getElementById('productGrid');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartTotalEl = document.getElementById('cartTotal');
+    const searchInput = document.getElementById('search');
+    const categorySelect = document.getElementById('category');
+
+    function renderProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+      const category = categorySelect.value;
+      grid.innerHTML = '';
+
+      const filtered = products.filter(product => {
+        const matchesCategory = category === 'all' || product.category === category;
+        const matchesQuery = product.name.toLowerCase().includes(query) || product.description.toLowerCase().includes(query);
+        return matchesCategory && matchesQuery;
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = '<p style="grid-column:1/-1; color: var(--muted);">No se encontraron productos. Intenta otra búsqueda.</p>';
+        return;
+      }
+
+      filtered.forEach(product => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <div class="price">
+            <span>$${product.price}</span>
+            <button data-id="${product.id}">Agregar</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderCart() {
+      const items = Array.from(cart.values());
+      cartItemsEl.innerHTML = '';
+      if (!items.length) {
+        cartItemsEl.innerHTML = '<p style="margin:0; color:var(--muted);">Agrega productos para verlos aquí.</p>';
+        cartTotalEl.textContent = 'Total: $0';
+        return;
+      }
+
+      let total = 0;
+      items.forEach(item => {
+        total += item.price * item.quantity;
+        const entry = document.createElement('div');
+        entry.className = 'cart-item';
+        entry.innerHTML = `
+          <span>${item.name} x${item.quantity}</span>
+          <strong>$${item.price * item.quantity}</strong>
+        `;
+        cartItemsEl.appendChild(entry);
+      });
+
+      cartTotalEl.textContent = `Total: $${total}`;
+    }
+
+    function addToCart(id) {
+      const product = products.find(item => item.id === id);
+      if (!product) return;
+      const existing = cart.get(id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.set(id, { ...product, quantity: 1 });
+      }
+      renderCart();
+    }
+
+    grid.addEventListener('click', event => {
+      const button = event.target.closest('button[data-id]');
+      if (!button) return;
+      addToCart(Number(button.dataset.id));
+    });
+
+    searchInput.addEventListener('input', renderProducts);
+    categorySelect.addEventListener('change', renderProducts);
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
